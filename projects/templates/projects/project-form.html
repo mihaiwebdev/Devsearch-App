@@ -5,8 +5,9 @@
 <main class="formPage my-xl">
     <div class="content-box">
         <div class="formWrapper">
-            <a class="backButton" href="#"><i class="fa-solid fa-chevron-left"></i></a>
+            <a class="backButton" href="{% url 'user-account' %}"><i class="fa-solid fa-chevron-left"></i></a>
             <br>
+            <h1>{{action}} Project</h1>
 
             <form class="form" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}

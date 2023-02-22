@@ -32,6 +32,9 @@ class Project(models.Model):
             img = ''
         return img
 
+    class Meta:
+        ordering = ['-created']
+
 
 class Review(models.Model):
 

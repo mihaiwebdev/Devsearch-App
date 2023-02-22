@@ -14,7 +14,7 @@ img {
   width: 100%;
 }
 
-.tag > i.im {
+.tag > i {
   font-size: 1.5rem;
   margin-right: 0.5rem;
 }
@@ -24,6 +24,8 @@ img {
   max-width: 85rem;
   margin: 0 auto;
 }
+
+
 
 /*=======================
   Header Section

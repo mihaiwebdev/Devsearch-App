@@ -1,18 +1,24 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+
+from django.contrib import messages
 
 from .forms import ProjectForm
 from .models import Project
+from .utils import searchProjects, paginateProjects
+
 
 # Create your views here.
 
 
 def projects(request):
 
-    projects = Project.objects.all()
+    projects, search_query = searchProjects(request)
 
-    context = {'projects': projects}
+    custom_range, projects = paginateProjects(request, projects, 6)
+
+    context = {'projects': projects,
+               'search_query': search_query, 'custom_range': custom_range}
 
     return render(request, 'projects/projects.html', context)
 
@@ -28,23 +34,32 @@ def singleProject(request, pk):
 
 @login_required(login_url="login")
 def createProject(request):
+
+    profile = request.user.profile
+
     form = ProjectForm()
 
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES)
-        if form.is_valid:
-            form.save()
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.owner = profile
+            project.save()
+            messages.success(request, 'Project was added successfully')
 
-            return redirect('projects')
+            return redirect('user-account')
 
-    context = {'form': form}
+    context = {'form': form, 'action': 'Create'}
 
     return render(request, 'projects/project-form.html', context)
 
 
 @login_required(login_url="login")
 def updateProject(request, pk):
-    project = Project.objects.get(id=pk)
+
+    profile = request.user.profile
+
+    project = profile.project_set.get(id=pk)
 
     form = ProjectForm(instance=project)
 
@@ -52,22 +67,26 @@ def updateProject(request, pk):
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Project was updated successfully')
 
-            return redirect('projects')
+            return redirect('user-account')
 
-    context = {'form': form}
+    context = {'form': form, 'action': 'Update'}
 
     return render(request, 'projects/project-form.html', context)
 
 
 @login_required(login_url="login")
 def deleteProject(request, pk):
-    project = Project.objects.get(id=pk)
+
+    profile = request.user.profile
+
+    project = profile.project_set.get(id=pk)
 
     if request.method == 'POST':
         project.delete()
-        return redirect('projects')
+        return redirect('user-account')
 
-    context = {'object', project}
+    context = {'object': project, 'title': project.title}
 
-    return render(request, 'projects/delete-template.html', context)
+    return render(request, 'delete-template.html', context)
