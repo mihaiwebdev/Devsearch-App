@@ -30,9 +30,9 @@
             <ul class="header__menu">
                 <li class="header__menuItem"><a href="{% url 'profiles' %}">Developers</a></li>
                 <li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
-                <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>
                 
                 {% if request.user.is_authenticated %}
+                <li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
                 <li class="header__menuItem"><a href="{% url 'user-account' %}">Account</a></li>
                     <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Logout</a></li>
                 {% else %}
@@ -62,4 +62,6 @@
 </body>
 
 <script src="{% static 'uikit/app.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
 </html>

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewFrom
 from .models import Project
 from .utils import searchProjects, paginateProjects
 
@@ -27,7 +27,25 @@ def singleProject(request, pk):
 
     project = Project.objects.get(id=pk)
 
-    context = {'project': project}
+    form = ReviewFrom()
+
+    if request.method == 'POST':
+        form = ReviewFrom(request.POST)
+
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.project = project
+            feedback.owner = request.user.profile
+            feedback.save()
+
+            project.getVoteCount
+
+            messages.success(
+                request, 'Your reviews was successfully submitted')
+
+            return redirect('project', pk=project.id)
+
+    context = {'project': project, 'form': form}
 
     return render(request, 'projects/project-page.html', context)
 
