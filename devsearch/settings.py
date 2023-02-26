@@ -127,7 +127,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = 'mwsolutionscontact@gmail.com'
 
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
+EMAIL_HOST_PASSWORD = 'djfkpugpvtrgojjp'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
