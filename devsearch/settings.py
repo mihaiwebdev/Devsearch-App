@@ -32,7 +32,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  'devsearchwebapp-production.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['devsearchwebapp-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://devsearchwebapp-production.up.railway.app']
 
 
 # Application definition
@@ -53,11 +53,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-
-    'django.middleware.security.SecurityMiddleware',
-
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
